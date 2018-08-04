@@ -1,0 +1,24 @@
+{
+  "name": "fastpack-devserver-playground",
+  "version": "0.1.0",
+  "description": "Playing with serving files and websockets in reason to build a devserver for fastpack",
+  "license": "MIT",
+  "esy": {
+    "build": "refmterr dune build"
+  },
+  "dependencies": {
+    "@opam/dune": "*",
+    "@opam/lwt": "*",
+    "@opam/websocket-lwt": "*",
+    "@opam/cohttp": "*",
+    "@opam/cohttp-lwt-unix": "*",
+    "@opam/conduit-lwt-unix": "*",
+    "@esy-ocaml/reason": "*",
+    "refmterr": "*",
+    "ocaml": "~4.6.0"
+  },
+  "devDependencies": {
+    "@esy-ocaml/merlin": "*",
+    "ocaml": "~4.6.0"
+  }
+}
