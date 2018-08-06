@@ -23,11 +23,13 @@ let serveStatic = (base, path) => {
   };
 };
 
-let callback = (_conn, req: Cohttp.Request.t, _body) => {
+let createCallback = (websocketHandler, conn, req: Cohttp.Request.t, body) => {
   let _ = Lwt_io.printf("Req: %s\n", req.resource);
   let req_path = Cohttp.Request.uri(req) |> Uri.path;
   let path_parts = Str.(split(regexp("/"), req_path));
+
   switch (req.meth, path_parts) {
+  | (`GET, ["ws"]) => websocketHandler(conn, req, body)
   | (`GET, _) => serveStatic("./public", req_path)
   | _ => C.Server.respond_string(~status=`Not_found, ~body="", ())
   };
@@ -35,5 +37,15 @@ let callback = (_conn, req: Cohttp.Request.t, _body) => {
 
 let start = (~port=3000, ()) => {
   Printf.sprintf("Listening on port %d...", port) |> print_endline;
-  C.Server.create(~mode=`TCP(`Port(port)), C.Server.make(~callback, ()));
+
+  let (sendMessage, websocketHandler) =
+    WebsocketHandler.makeHandler(~debug=true, ());
+
+  (
+    sendMessage,
+    C.Server.create(
+      ~mode=`TCP(`Port(port)),
+      C.Server.make(~callback=createCallback(websocketHandler), ()),
+    ),
+  );
 };

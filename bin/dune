@@ -1,4 +1,5 @@
 (executable
   (name main)
   (public_name fastpack-dev-server)
-  (libraries lwt cohttp cohttp-lwt-unix websocket-lwt str))
+  (libraries
+    lwt cohttp cohttp-lwt-unix websocket-lwt websocket-lwt.cohttp str))

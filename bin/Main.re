@@ -1,10 +1,11 @@
 let main = () => {
-  let fileServer = FileServer.start();
+  open Lwt;
+  print_endline("Starting server");
+  let (sendMessage, fileServer) = FileServer.start();
 
-  let uri = Uri.make(~scheme="http", ~host="127.0.0.1", ~port=8080, ());
-  let websocketServer = WebsocketServer.start(uri);
+  let sendMessageAfter = Lwt_unix.sleep(5.) >>= (() => sendMessage("test"));
 
-  Lwt.join([fileServer, websocketServer]) |> Lwt_main.run;
+  Lwt.join([fileServer, sendMessageAfter]) |> Lwt_main.run;
 };
 
 main();
