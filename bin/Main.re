@@ -2,7 +2,6 @@ open Cmdliner;
 
 let main = () => {
   print_endline("Copying index.html");
-
   let copyFile =
     Fs.copyFile(
       ~source="./public/index.html",
@@ -11,10 +10,9 @@ let main = () => {
     );
 
   print_endline("Starting server");
-  let (sendMessage, fileServer) = FileServer.start();
+  let fileServer = Devserver.start();
 
-  Lwt.join([fileServer, Fastpack.start(~sendMessage), copyFile])
-  |> Lwt_main.run;
+  Lwt.join([fileServer, copyFile]) |> Lwt_main.run;
 };
 
 let main_t = Term.(const(main) $ const());

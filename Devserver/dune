@@ -1,0 +1,4 @@
+(library
+  (name devserver)
+  (libraries lwt cohttp cohttp-lwt-unix websocket-lwt websocket-lwt.cohttp str fs)
+  (preprocess (pps lwt.ppx)))

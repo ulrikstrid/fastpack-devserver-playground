@@ -41,11 +41,11 @@ let start = (~port=3000, ()) => {
   let (sendMessage, websocketHandler) =
     WebsocketHandler.makeHandler(~debug=true, ());
 
-  (
-    sendMessage,
+  Lwt.join([
+    Fastpack.start(~sendMessage),
     C.Server.create(
       ~mode=`TCP(`Port(port)),
       C.Server.make(~callback=createCallback(websocketHandler), ()),
     ),
-  );
+  ]);
 };

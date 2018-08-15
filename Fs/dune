@@ -1,4 +1,4 @@
 (library
   (name fs)
-  (libraries lwt)
+  (libraries lwt.unix)
   (preprocess (pps lwt.ppx)))
