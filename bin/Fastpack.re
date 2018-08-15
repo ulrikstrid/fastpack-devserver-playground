@@ -1,9 +1,16 @@
 let logProcess = (p: Lwt_process.process_full, sendMessage) =>
-  Lwt_io.read_lines(p#stdout)
-  |> Lwt_stream.iter_s(s => {
-       print_endline(s);
-       sendMessage(s);
-     });
+  Lwt.join([
+    Lwt_io.read_lines(p#stdout)
+    |> Lwt_stream.iter_s(s => {
+         print_endline(s);
+         sendMessage(s);
+       }),
+    Lwt_io.read_lines(p#stderr)
+    |> Lwt_stream.iter_s(s => {
+         print_endline(s);
+         sendMessage(s);
+       }),
+  ]);
 
 let start = (~sendMessage: string => Lwt.t(unit)) =>
   Lwt.(

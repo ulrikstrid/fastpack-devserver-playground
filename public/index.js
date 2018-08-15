@@ -7,9 +7,22 @@ ws.addEventListener("open", event => {
 });
 
 ws.addEventListener("message", event => {
-  console.log(event.data, event.data.includes("Packed"));
-  if (event.data.includes("Packed")) {
-    location.reload();
+  console.log(event.data);
+  if (event.data !== "hello") {
+    const data = JSON.parse(event.data);
+    console.log(data);
+    if (data.error) {
+      console.log(data.error);
+      document.querySelector("#index").innerHTML = `<pre>${data.error}</pre>`;
+      /*
+        .replace(" ", "&nbsp;")
+        .split("\n")
+        .join("<br>");
+        */
+    } else {
+      debugger;
+      window.location.reload();
+    }
   }
 });
 
