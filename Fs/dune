@@ -1,0 +1,4 @@
+(library
+  (name fs)
+  (libraries lwt)
+  (preprocess (pps lwt.ppx)))
