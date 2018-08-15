@@ -30,7 +30,7 @@ let createCallback = (websocketHandler, conn, req: Cohttp.Request.t, body) => {
 
   switch (req.meth, path_parts) {
   | (`GET, ["ws"]) => websocketHandler(conn, req, body)
-  | (`GET, _) => serveStatic("./public", req_path)
+  | (`GET, _) => serveStatic("./bundle", req_path)
   | _ => C.Server.respond_string(~status=`Not_found, ~body="", ())
   };
 };
