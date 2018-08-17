@@ -6,3 +6,4 @@ _release
 *.native
 *.install
 bundle
+.DS_Store
