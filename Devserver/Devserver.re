@@ -23,29 +23,30 @@ let serveStatic = (base, path) => {
   };
 };
 
-let createCallback = (websocketHandler, conn, req: Cohttp.Request.t, body) => {
+let createCallback =
+    (~output, websocketHandler, conn, req: Cohttp.Request.t, body) => {
   let _ = Lwt_io.printf("Req: %s\n", req.resource);
   let req_path = Cohttp.Request.uri(req) |> Uri.path;
   let path_parts = Str.(split(regexp("/"), req_path));
 
   switch (req.meth, path_parts) {
   | (`GET, ["ws"]) => websocketHandler(conn, req, body)
-  | (`GET, _) => serveStatic("./bundle", req_path)
+  | (`GET, _) => serveStatic(output, req_path)
   | _ => C.Server.respond_string(~status=`Not_found, ~body="", ())
   };
 };
 
-let start = (~port=3000, ()) => {
+let start = (~port=3000, ~entry, ~output, ()) => {
   Printf.sprintf("Listening on port %d...", port) |> print_endline;
 
   let (sendMessage, websocketHandler) =
     WebsocketHandler.makeHandler(~debug=true, ());
 
   Lwt.join([
-    Fastpack.start(~sendMessage),
+    Fastpack.start(~sendMessage, ~entry, ~output, ()),
     C.Server.create(
       ~mode=`TCP(`Port(port)),
-      C.Server.make(~callback=createCallback(websocketHandler), ()),
+      C.Server.make(~callback=createCallback(~output, websocketHandler), ()),
     ),
   ]);
 };

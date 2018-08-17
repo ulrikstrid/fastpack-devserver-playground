@@ -12,7 +12,7 @@ let logProcess = (~sendMessage, p: Lwt_process.process_full) =>
        }),
   ]);
 
-let start = (~sendMessage: string => Lwt.t(unit)) =>
+let start = (~sendMessage: string => Lwt.t(unit), ~entry, ~output, ()) =>
   Lwt_process.with_process_full(
     (
       "fpack",
@@ -21,7 +21,8 @@ let start = (~sendMessage: string => Lwt.t(unit)) =>
         "--report=json",
         "--watch",
         "--development",
-        "./public/index.js",
+        "--output=" ++ output,
+        entry,
       |],
     ),
     logProcess(~sendMessage),
