@@ -58,8 +58,6 @@ let main = (source, output, port, entry) => {
         let%lwt targetFile =
           Lwt_io.open_file(~mode=Lwt_io.Output, output ++ "/index.html");
 
-        print_endline(indexHtml);
-
         Lwt_io.write(targetFile, indexHtml)
         >>= (() => Lwt_io.close(targetFile));
       }
