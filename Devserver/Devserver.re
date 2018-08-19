@@ -49,7 +49,7 @@ let createCallback =
 let start = (~port=3000, ~entry, ~output, ()) => {
   Printf.sprintf("Listening on port %d...", port) |> print_endline;
 
-  let proxyHandler = ProxyHandler.makeHandler(~host="http://www.reddit.com");
+  let proxyHandler = ProxyHandler.makeHandler(~host="https://www.reddit.com");
 
   let (sendMessage, websocketHandler) =
     WebsocketHandler.makeHandler(~debug=true, ());
