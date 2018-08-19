@@ -28,6 +28,9 @@ let createCallback =
       ~output,
       ~websocketHandler,
       ~proxyHandler,
+      ~shouldProxy,
+      ~proxyPath,
+      ~proxyPathRewrite,
       conn,
       req: Cohttp.Request.t,
       body,
@@ -36,20 +39,42 @@ let createCallback =
   let req_path = Cohttp.Request.uri(req) |> Uri.path;
   let path_parts = Str.(split(regexp("/"), req_path));
 
-  switch (req.meth, path_parts) {
-  | (_, ["api"]) => proxyHandler("", req, body)
-  | (_, ["api", ...path]) =>
-    proxyHandler(String.concat("/", path), req, body)
-  | (`GET, ["ws"]) => websocketHandler(conn, req, body)
-  | (`GET, _) => serveStatic(output, req_path)
+  let proxyPathRewrite =
+    switch (proxyPathRewrite) {
+    | Some(p) => p
+    | None => proxyPath
+    };
+
+  switch (req.meth, path_parts, shouldProxy) {
+  | (_, [apiPath], true) when apiPath == proxyPath =>
+    proxyHandler(proxyPathRewrite, req, body)
+  | (_, [apiPath, ...path], true) when apiPath == proxyPath =>
+    proxyHandler(String.concat("/", [proxyPathRewrite, ...path]), req, body)
+  | (`GET, ["ws"], _) => websocketHandler(conn, req, body)
+  | (`GET, _, _) => serveStatic(output, req_path)
   | _ => C.Server.respond_string(~status=`Not_found, ~body="", ())
   };
 };
 
-let start = (~port=3000, ~entry, ~output, ()) => {
+let start =
+    (
+      ~port=3000,
+      ~entry,
+      ~output,
+      ~proxyTarget,
+      ~proxyPath,
+      ~proxyPathRewrite,
+      (),
+    ) => {
   Printf.sprintf("Listening on port %d...", port) |> print_endline;
 
-  let proxyHandler = ProxyHandler.makeHandler(~host="https://www.reddit.com");
+  let (host, shouldProxy) =
+    switch (proxyTarget) {
+    | Some(target) => (target, true)
+    | None => ("", false)
+    };
+
+  let proxyHandler = ProxyHandler.makeHandler(~host);
 
   let (sendMessage, websocketHandler) =
     WebsocketHandler.makeHandler(~debug=true, ());
@@ -59,7 +84,15 @@ let start = (~port=3000, ~entry, ~output, ()) => {
     C.Server.create(
       ~mode=`TCP(`Port(port)),
       C.Server.make(
-        ~callback=createCallback(~output, ~websocketHandler, ~proxyHandler),
+        ~callback=
+          createCallback(
+            ~output,
+            ~websocketHandler,
+            ~proxyHandler,
+            ~shouldProxy,
+            ~proxyPath,
+            ~proxyPathRewrite,
+          ),
         (),
       ),
     ),

@@ -1,6 +1,7 @@
 open Cmdliner;
 
-let main = (source, output, port, entry) => {
+let main =
+    (source, output, port, entry, proxyTarget, proxyPath, proxyPathRewrite) => {
   open Lwt;
 
   print_endline("Copying index.html...");
@@ -65,7 +66,15 @@ let main = (source, output, port, entry) => {
     >>= (
       () => {
         print_endline("Starting server and fastpack...");
-        Devserver.start(~port, ~entry, ~output, ());
+        Devserver.start(
+          ~port,
+          ~entry,
+          ~output,
+          ~proxyTarget,
+          ~proxyPath,
+          ~proxyPathRewrite,
+          (),
+        );
       }
     );
 
@@ -95,6 +104,34 @@ let port = {
   Arg.(value & opt(int, 3000) & info(~docv="PORT", ~doc, ["p", "port"]));
 };
 
+let proxyTarget = {
+  let doc = "The adress of the backend server you want to proxy.";
+  Arg.(
+    value
+    & opt(some(string), None)
+    & info(~docv="HOST", ~doc, ["pt", "proxytarget"])
+  );
+};
+
+let proxyPath = {
+  let doc = "The path you want to proxy to the backend.";
+  Arg.(
+    value
+    & opt(string, "api")
+    & info(~docv="PATH", ~doc, ["pp", "proxypath"])
+  );
+};
+
+let proxyPathRewrite = {
+  let doc = "Rewrite the proxy path to this.";
+
+  Arg.(
+    value
+    & opt(some(string), None)
+    & info(~docv="PATH", ~doc, ["pr", "proxyrewrite"])
+  );
+};
+
 let entry = {
   let doc = "The main entry point to bundle.";
   Arg.(
@@ -102,7 +139,17 @@ let entry = {
   );
 };
 
-let main_t = Term.(const(main) $ source $ output $ port $ entry);
+let main_t =
+  Term.(
+    const(main)
+    $ source
+    $ output
+    $ port
+    $ entry
+    $ proxyTarget
+    $ proxyPath
+    $ proxyPathRewrite
+  );
 
 let info = {
   let doc = "Run a devserver with fastpack.";
