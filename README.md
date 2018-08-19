@@ -1,10 +1,6 @@
 # fastpack devserver playground
 
-Playing with serving files and websockets in reason to build a devserver for fastpack.
-
-The project is started as a clone of [hello-reason](https://github.com/esy-ocaml/hello-reason).
-
-The fileserver part is borrowed from [@anmonteiro's graphql example](https://github.com/anmonteiro/reason-graphql-fullstack).
+This is a playground for developing a devserver for [fastpack](https://github.com/fastpack/fastpack). The goal is to get it merged in to fastpack.
 
 ## Usage
 
@@ -59,6 +55,10 @@ EXIT STATUS
 
        125 on unexpected internal errors (bugs).
 ```
+
+## Special thanks
+
+@anmonteiro has helped me a lot on discord and I have borrowed most of the fileserver part from his [graphql example](https://github.com/anmonteiro/reason-graphql-fullstack).
 
 ## Development
 
