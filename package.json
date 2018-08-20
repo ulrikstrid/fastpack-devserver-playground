@@ -1,6 +1,6 @@
 {
   "name": "fpack-devserver",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Playing with serving files and websockets in reason to build a devserver for fastpack",
   "license": "MIT",
   "esy": {
