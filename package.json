@@ -8,6 +8,15 @@
     "release": {
       "releasedBinaries": [
         "fpack-devserver"
+      ],
+      "deleteFromBinaryRelease": [
+        "ocaml-*",
+        "*jbuilder-*",
+        "refmterr-*",
+        "opam__slash__ppx_*",
+        "opam__*",
+        "esy_ocaml__*",
+        "yarn_*"
       ]
     }
   },
