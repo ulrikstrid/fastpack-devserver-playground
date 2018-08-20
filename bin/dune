@@ -1,6 +1,6 @@
 (executable
   (name main)
-  (public_name fastpack-dev-server)
+  (public_name fpack-devserver)
   (libraries
     lwt cmdliner fs devserver)
   (preprocess (pps lwt.ppx)))

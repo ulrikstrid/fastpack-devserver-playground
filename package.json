@@ -4,7 +4,12 @@
   "description": "Playing with serving files and websockets in reason to build a devserver for fastpack",
   "license": "MIT",
   "esy": {
-    "build": "refmterr dune build"
+    "build": "refmterr dune build",
+    "release": {
+      "releasedBinaries": [
+        "fpack-devserver"
+      ]
+    }
   },
   "dependencies": {
     "@opam/dune": "*",
