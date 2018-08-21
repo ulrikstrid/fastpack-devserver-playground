@@ -6,39 +6,6 @@
   "scripts": {
     "postinstall": "node postinstall.js"
   },
-  "esy": {
-    "build": "refmterr dune build",
-    "release": {
-      "releasedBinaries": [
-        "fpack-devserver"
-      ],
-      "deleteFromBinaryRelease": [
-        "ocaml-*",
-        "*jbuilder-*",
-        "refmterr-*",
-        "opam__slash__ppx_*",
-        "opam__*",
-        "esy_ocaml__*",
-        "yarn_*"
-      ]
-    }
-  },
-  "dependencies": {
-    "@opam/dune": "*",
-    "@opam/lwt": "*",
-    "@opam/websocket-lwt": "*",
-    "@opam/cohttp": "*",
-    "@opam/cohttp-lwt-unix": "*",
-    "@opam/conduit-lwt-unix": "*",
-    "@opam/cmdliner": "*",
-    "@esy-ocaml/reason": "*",
-    "refmterr": "*",
-    "ocaml": "~4.6.0"
-  },
-  "devDependencies": {
-    "@esy-ocaml/merlin": "*",
-    "ocaml": "~4.6.0"
-  },
   "bin": {
     "fpack-devserver": "fpack-devserver"
   }

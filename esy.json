@@ -1,0 +1,35 @@
+{
+  "name": "fpack-devserver",
+  "version": "0.1.2",
+  "dependencies": {
+    "@opam/dune": "*",
+    "@opam/lwt": "*",
+    "@opam/websocket-lwt": "*",
+    "@opam/cohttp": "*",
+    "@opam/cohttp-lwt-unix": "*",
+    "@opam/conduit-lwt-unix": "*",
+    "@opam/cmdliner": "*",
+    "@esy-ocaml/reason": "*",
+    "refmterr": "*",
+    "ocaml": "~4.6.0"
+  },
+  "devDependencies": {
+    "@esy-ocaml/merlin": "*",
+    "ocaml": "~4.6.0"
+  },
+  "esy": {
+    "build": "refmterr dune build",
+    "release": {
+      "releasedBinaries": ["fpack-devserver"],
+      "deleteFromBinaryRelease": [
+        "ocaml-*",
+        "*jbuilder-*",
+        "refmterr-*",
+        "opam__slash__ppx_*",
+        "opam__*",
+        "esy_ocaml__*",
+        "yarn_*"
+      ]
+    }
+  }
+}
