@@ -5,7 +5,7 @@ var platform = process.platform;
 const targetPath = path.join(__dirname, "fpack-devserver");
 
 function getPlatformBinaryPath(platform) {
-  return path.join(__dirname, "platform-" + platform, "fpack-devserver");
+  return path.join(__dirname, "platform-" + platform, "bin", "fpack-devserver");
 }
 
 function movePlatformBinary(platform) {
