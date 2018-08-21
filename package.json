@@ -3,6 +3,9 @@
   "version": "0.1.1",
   "description": "Playing with serving files and websockets in reason to build a devserver for fastpack",
   "license": "MIT",
+  "scripts": {
+    "postinstall": "node postinstall.js"
+  },
   "esy": {
     "build": "refmterr dune build",
     "release": {
@@ -35,5 +38,8 @@
   "devDependencies": {
     "@esy-ocaml/merlin": "*",
     "ocaml": "~4.6.0"
+  },
+  "bin": {
+    "fpack-devserver": "fpack-devserver"
   }
 }
