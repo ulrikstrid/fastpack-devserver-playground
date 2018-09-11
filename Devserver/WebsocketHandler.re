@@ -27,12 +27,7 @@ let makeHandler = (~debug=false, ()): (string => Lwt.t(unit), handler) => {
     } else {
       ();
     };
-  /*let debug_log_lwt = (msg: string) =>
-    if (debug) {
-      Lwt_io.eprint(msg);
-    } else {
-      Lwt.return();
-    };*/
+
   let conn_update_handlers = Lwt_mvar.create(ByConn.empty);
   (
     path =>
